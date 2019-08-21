@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class PlanGeneratorTest {
 
@@ -21,8 +22,30 @@ public class PlanGeneratorTest {
     }
 
     @Test
-    public void test() {
-        instance.generatePlan(5000, 0.05, 24, LocalDate.now());
+    public void testComputations() {
+        List<BorrowerPlanItem> plan = instance.generatePlan(5000, 0.05, 24, LocalDate.now());
+
+        BorrowerPlanItem firstItem = plan.get(0);
+        BorrowerPlanItem secondItem = plan.get(1);
+        BorrowerPlanItem lastItem = plan.get(plan.size() - 1);
+
+        Assert.assertEquals(219.36, firstItem.getAnnuity(), 0);
+        Assert.assertEquals(198.53, firstItem.getPrincipal(), 0);
+        Assert.assertEquals(20.83, firstItem.getInterest(), 0);
+        Assert.assertEquals(5000, firstItem.getInitialOutstandingPrincipal(), 0);
+        Assert.assertEquals(4801.47, firstItem.getRemainingOutstandingPrincipal(), 0);
+
+        Assert.assertEquals(219.36, secondItem.getAnnuity(), 0);
+        Assert.assertEquals(199.35, secondItem.getPrincipal(), 0);
+        Assert.assertEquals(20.01, secondItem.getInterest(), 0);
+        Assert.assertEquals(4801.47, secondItem.getInitialOutstandingPrincipal(), 0);
+        Assert.assertEquals(4602.12, secondItem.getRemainingOutstandingPrincipal(), 0);
+
+        Assert.assertEquals(219.28, lastItem.getAnnuity(), 0);
+        Assert.assertEquals(218.37, lastItem.getPrincipal(), 0);
+        Assert.assertEquals(0.91, lastItem.getInterest(), 0);
+        Assert.assertEquals(218.37, lastItem.getInitialOutstandingPrincipal(), 0);
+        Assert.assertEquals(0, lastItem.getRemainingOutstandingPrincipal(), 0);
     }
 
     @Test
