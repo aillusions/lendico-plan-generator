@@ -1,4 +1,4 @@
-package com.lendico.plan;
+package com.lendico.plan.generator.data;
 
 import java.math.BigDecimal;
 

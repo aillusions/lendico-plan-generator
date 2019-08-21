@@ -1,5 +1,6 @@
-package com.lendico.plan;
+package com.lendico.plan.generator;
 
+import com.lendico.plan.generator.data.BorrowerPlanItem;
 import org.junit.Assert;
 import org.junit.Test;
 

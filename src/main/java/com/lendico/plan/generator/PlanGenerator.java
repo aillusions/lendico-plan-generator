@@ -1,5 +1,7 @@
-package com.lendico.plan;
+package com.lendico.plan.generator;
 
+import com.lendico.plan.generator.data.BorrowerPlanItem;
+import com.lendico.plan.generator.data.Monetary;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
