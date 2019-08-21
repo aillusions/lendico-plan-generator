@@ -1,36 +1,38 @@
 package com.lendico.plan.web;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class BorrowerPlanRequestDto {
 
-    @NotEmpty
-    private String loanAmount;
-
-    @NotEmpty
-    private String nominalRate;
+    @NotNull
+    @Min(1)
+    private Double loanAmount;
 
     @NotNull
+    private Double nominalRate;
+
+    @NotNull
+    @Min(1)
     private Integer duration;
 
     @NotNull
     private LocalDate startDate;
 
-    public String getLoanAmount() {
+    public Double getLoanAmount() {
         return loanAmount;
     }
 
-    public void setLoanAmount(String loanAmount) {
+    public void setLoanAmount(Double loanAmount) {
         this.loanAmount = loanAmount;
     }
 
-    public String getNominalRate() {
+    public Double getNominalRate() {
         return nominalRate;
     }
 
-    public void setNominalRate(String nominalRate) {
+    public void setNominalRate(Double nominalRate) {
         this.nominalRate = nominalRate;
     }
 
