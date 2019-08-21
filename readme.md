@@ -9,14 +9,18 @@ Borrower plan generator:
      
 * To build/push Docker image 
 
+<pre>
     docker build -f ./docker/Dockerfile -t aillusions/lendico-plan-generator:1.0.0 .
     docker push aillusions/lendico-plan-generator:1.0.0     
+</pre>  
 
 * To run lendico-plan-generator as docker container:
 
+<pre>
     docker-compose up
     # afterwards: docker-compose down
-    
+</pre>
+  
 * To access service:
      
 <pre>
