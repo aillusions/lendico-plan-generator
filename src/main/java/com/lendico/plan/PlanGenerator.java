@@ -17,7 +17,7 @@ public class PlanGenerator {
      * repayment plans throughout the lifetime of a loan.
      *
      * @param loanAmount  - total loan amount ("total principal amount")
-     * @param nominalRate - nominal interest rate
+     * @param nominalRate - nominal interest rate (a yearly basis number)
      * @param duration    - duration (number of instalments in months)
      * @param startDate   - Date of Disbursement/Payout
      * @return
