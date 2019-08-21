@@ -38,7 +38,7 @@ public class PlanGenerator {
             BorrowerPlanItem planItem = new BorrowerPlanItem();
             planItem.setRepaymentDate(payoutDate);
 
-            double interest = calculateInterest(nominalInterestRate, initialOutstandingPrincipal);
+            double interest = calculateInterest(nominalInterestRate, initialOutstandingPrincipal).toTruncated();
             planItem.setInterest(interest);
 
             double principal = calculatePrincipal(initialAnnuity, interest, initialOutstandingPrincipal);
@@ -66,8 +66,8 @@ public class PlanGenerator {
     /**
      * Interest = (Nominal-Rate * Days in Month * Initial Outstanding Principal) / days in year
      */
-    protected double calculateInterest(double nominalInterestRate, double initialOutstandingPrincipal) {
-        return (nominalInterestRate * DAYS_PER_MONTH * initialOutstandingPrincipal) / DAYS_PER_YEAR;
+    protected Monetary calculateInterest(double nominalInterestRate, double initialOutstandingPrincipal) {
+        return new Monetary((nominalInterestRate * DAYS_PER_MONTH * initialOutstandingPrincipal) / DAYS_PER_YEAR);
     }
 
     /**
