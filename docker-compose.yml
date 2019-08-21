@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+
+  plan-generator:
+    image: aillusions/lendico-plan-generator:1.0.0
+    container_name: plan-generator-srv
+    ports:
+    - 8080:8080
+    networks:
+    - lendico-network
+
+
+networks:
+  lendico-network:
+    name: lendico-network

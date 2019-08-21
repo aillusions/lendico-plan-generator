@@ -7,8 +7,18 @@ Borrower plan generator:
     
 * To run: mvn spring-boot:run
      
-* Then:
+* To build/push Docker image 
 
+    docker build -f ./docker/Dockerfile -t aillusions/lendico-plan-generator:1.0.0 .
+    docker push aillusions/lendico-plan-generator:1.0.0     
+
+* To run lendico-plan-generator as docker container:
+
+    docker-compose up
+    # afterwards: docker-compose down
+    
+* To access service:
+     
 <pre>
 
   curl --request POST --header "Content-Type: application/json" \
