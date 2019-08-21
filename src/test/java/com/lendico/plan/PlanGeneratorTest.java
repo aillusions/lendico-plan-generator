@@ -9,6 +9,12 @@ public class PlanGeneratorTest {
 
     @Test
     public void shouldGeneratePlan() {
-        Assert.assertNotNull(instance.generatePlan(0, 0, 0, null));
+        Assert.assertNotNull(instance.generatePlan(100, 1, 12, null));
+    }
+
+    @Test
+    public void numberOfItemsShouldBeCorresponding() {
+        Assert.assertEquals(12, instance.generatePlan(100, 1, 12, null).size());
+        Assert.assertEquals(24, instance.generatePlan(100, 1, 24, null).size());
     }
 }

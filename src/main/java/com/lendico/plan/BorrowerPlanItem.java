@@ -4,27 +4,33 @@ import java.time.LocalDate;
 
 public class BorrowerPlanItem {
 
-    private double borrowerPaymentAmount;
-    private LocalDate date;
+    private double annuity;
+    private LocalDate repaymentDate;
     private double initialOutstandingPrincipal;
     private double interest;
     private double principal;
     private double remainingOutstandingPrincipal;
 
-    public double getBorrowerPaymentAmount() {
-        return borrowerPaymentAmount;
+    /**
+     * Borrower payment amount
+     */
+    public double getAnnuity() {
+        return annuity;
     }
 
-    public void setBorrowerPaymentAmount(double borrowerPaymentAmount) {
-        this.borrowerPaymentAmount = borrowerPaymentAmount;
+    /**
+     * Borrower payment amount
+     */
+    public void setAnnuity(double annuity) {
+        this.annuity = annuity;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getRepaymentDate() {
+        return repaymentDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setRepaymentDate(LocalDate repaymentDate) {
+        this.repaymentDate = repaymentDate;
     }
 
     public double getInitialOutstandingPrincipal() {
