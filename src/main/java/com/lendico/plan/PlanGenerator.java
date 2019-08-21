@@ -29,7 +29,7 @@ public class PlanGenerator {
     public List<BorrowerPlanItem> generatePlan(double loanAmount, double nominalInterestRate, int durationMonths, LocalDate startDate) {
         List<BorrowerPlanItem> rv = new ArrayList<>();
 
-        double initialAnnuity = calculateAnnuityPayment(loanAmount, nominalInterestRate, durationMonths).toTruncated();
+        double derivedAnnuity = calculateAnnuityPayment(loanAmount, nominalInterestRate, durationMonths).toTruncated();
         double initialOutstandingPrincipal = loanAmount;
         LocalDate payoutDate = startDate;
 
@@ -37,25 +37,17 @@ public class PlanGenerator {
             BorrowerPlanItem planItem = new BorrowerPlanItem();
             planItem.setRepaymentDate(payoutDate);
 
-            // Correct
             planItem.setInitialOutstandingPrincipal(initialOutstandingPrincipal);
 
             double interest = calculateInterest(nominalInterestRate, initialOutstandingPrincipal).toTruncated();
             planItem.setInterest(interest);
 
-            // wrong last
-            // actual:      218.45
-            // expected:    218.37
-            double principal = calculatePrincipal(initialAnnuity, interest, initialOutstandingPrincipal).toTruncated();
+            double principal = calculatePrincipal(derivedAnnuity, interest, initialOutstandingPrincipal).toTruncated();
             planItem.setPrincipal(principal);
 
-            // wrong last
-            // actual:      219.36
-            // expected:    219.28
             double annuity = calculateAnnuity(principal, interest).toTruncated();
             planItem.setAnnuity(annuity);
 
-            // correct
             double remainingOutstandingPrincipal = calculateRemainingOutstandingPrincipal(initialOutstandingPrincipal, principal).toTruncated();
             planItem.setRemainingOutstandingPrincipal(remainingOutstandingPrincipal);
 
@@ -80,11 +72,12 @@ public class PlanGenerator {
     /**
      * Principal = Annuity - Interest (if, calculated interest amount exceeds the initial outstanding principal amount, take initial outstanding principal amount instead)
      */
-    protected Monetary calculatePrincipal(double annuity, double interest, double initialOutstandingPrincipal) {
-        if (interest > initialOutstandingPrincipal) {
+    protected Monetary calculatePrincipal(double derivedAnnuity, double interest, double initialOutstandingPrincipal) {
+        double rv = derivedAnnuity - interest;
+        if (rv > initialOutstandingPrincipal) {
             return new Monetary(initialOutstandingPrincipal);
         } else {
-            return new Monetary(annuity - interest);
+            return new Monetary(rv);
         }
     }
 
