@@ -12,7 +12,10 @@ import java.util.List;
 @Service
 public class PlanGenerator {
 
-    private AnnuityPaymentCalculator annuityPaymentCalculator = new AnnuityPaymentCalculator();
+    // For simplicity, we will have the following day convention: each month has 30 days, a year has 360 days.
+    private static final int DAYS_PER_MONTH = 30;
+    private static final int DAYS_PER_YEAR = 360;
+    private static final int MONTHS_PER_YEAR = 12;
 
     /**
      * In order to inform borrowers about the final repayment schedule, we need to have pre-calculated
@@ -27,26 +30,47 @@ public class PlanGenerator {
     public List<BorrowerPlanItem> generatePlan(double loanAmount, double interestRateNominal, int durationMonths, LocalDate startDate) {
         List<BorrowerPlanItem> rv = new ArrayList<>();
 
-        double initialAnnuityPayment = annuityPaymentCalculator.calculateAnnuityPayment(loanAmount, interestRateNominal, durationMonths);
+        double initialAnnuity =calculateAnnuityPayment(loanAmount, interestRateNominal, durationMonths);
 
+        double initialOutstandingPrincipal = loanAmount;
+        LocalDate payoutDate = startDate;
 
         for (int i = 0; i < durationMonths; i++) {
             BorrowerPlanItem planItem = new BorrowerPlanItem();
+            planItem.setRepaymentDate(payoutDate);
 
+            // Interest calculation; Interest = (Nominal-Rate * Days in Month * Initial Outstanding Principal) / days in year
+            double interest = interestRateNominal * DAYS_PER_MONTH * initialOutstandingPrincipal / DAYS_PER_YEAR;
+            planItem.setInterest(interest);
+
+            double annuity = initialAnnuity <= initialOutstandingPrincipal ? initialAnnuity : initialOutstandingPrincipal;
+            planItem.setAnnuity(annuity);
+
+            // Principal = Annuity - Interest (if, calculated interest amount exceeds the initial outstanding principal amount, take initial outstanding principal amount instead)
+            double principal = annuity - interest;
+            planItem.setPrincipal(principal);
+
+            System.out.println(planItem);
 
             rv.add(planItem);
+
+            payoutDate = payoutDate.plusMonths(1);
+            initialOutstandingPrincipal = loanAmount - principal;
         }
 
-        // For simplicity, we will have the following day convention: each month has 30 days, a year
-        // has 360 days.
-        // 2. Interest calculation; Interest = (Nominal-Rate * Days in Month * Initial Outstanding
-        // Principal) / days in year
-        // e.g. first installment Interest = (5.00 * 30 * 5000 / 360) = 2083.33333333 cents
-        // 3. Principal = Annuity - Interest (if, calculated interest amount exceeds the initial outstanding
-        // principal amount, take initial outstanding principal amount instead)
-        // 4. Borrower Payment Amount (Annuity) = Principal + Interest
 
         return rv;
+    }
+
+    /**
+     * @param loanAmount          - Loan Amount
+     * @param interestRateNominal - Interest Rate (per year)
+     * @param numberOfRepayments  - Length of Annuity (number of periods in months)
+     * @return
+     */
+    public double calculateAnnuityPayment(double loanAmount, double interestRateNominal, int numberOfRepayments) {
+        double interestRatePerPeriod = interestRateNominal / MONTHS_PER_YEAR;
+        return (loanAmount * interestRatePerPeriod) / (1 - Math.pow(1 + interestRatePerPeriod, -numberOfRepayments));
     }
 
 }

@@ -64,4 +64,16 @@ public class BorrowerPlanItem {
     public void setRemainingOutstandingPrincipal(double remainingOutstandingPrincipal) {
         this.remainingOutstandingPrincipal = remainingOutstandingPrincipal;
     }
+
+    @Override
+    public String toString() {
+        return "BorrowerPlanItem{" +
+                "annuity=" + annuity +
+                ", repaymentDate=" + repaymentDate +
+                ", initialOutstandingPrincipal=" + initialOutstandingPrincipal +
+                ", interest=" + interest +
+                ", principal=" + principal +
+                ", remainingOutstandingPrincipal=" + remainingOutstandingPrincipal +
+                '}';
+    }
 }
