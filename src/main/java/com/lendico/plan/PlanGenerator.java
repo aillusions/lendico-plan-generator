@@ -30,7 +30,7 @@ public class PlanGenerator {
     public List<BorrowerPlanItem> generatePlan(double loanAmount, double nominalInterestRate, int durationMonths, LocalDate startDate) {
         List<BorrowerPlanItem> rv = new ArrayList<>();
 
-        double initialAnnuity = calculateAnnuityPayment(loanAmount, nominalInterestRate, durationMonths);
+        double initialAnnuity = calculateAnnuityPayment(loanAmount, nominalInterestRate, durationMonths).toTruncated();
         double initialOutstandingPrincipal = loanAmount;
         LocalDate payoutDate = startDate;
 
@@ -41,15 +41,15 @@ public class PlanGenerator {
             double interest = calculateInterest(nominalInterestRate, initialOutstandingPrincipal).toTruncated();
             planItem.setInterest(interest);
 
-            double principal = calculatePrincipal(initialAnnuity, interest, initialOutstandingPrincipal);
+            double principal = calculatePrincipal(initialAnnuity, interest, initialOutstandingPrincipal).toTruncated();
             planItem.setPrincipal(principal);
 
-            double annuity = calculateAnnuity(principal, interest);
+            double annuity = calculateAnnuity(principal, interest).toTruncated();
             planItem.setAnnuity(annuity);
 
             planItem.setInitialOutstandingPrincipal(initialOutstandingPrincipal);
 
-            double remainingOutstandingPrincipal = calculateRemainingOutstandingPrincipal(initialOutstandingPrincipal, principal);
+            double remainingOutstandingPrincipal = calculateRemainingOutstandingPrincipal(initialOutstandingPrincipal, principal).toTruncated();
             planItem.setRemainingOutstandingPrincipal(remainingOutstandingPrincipal);
 
             System.out.println(planItem);
@@ -57,7 +57,7 @@ public class PlanGenerator {
             rv.add(planItem);
 
             payoutDate = payoutDate.plusMonths(1);
-            initialOutstandingPrincipal = initialOutstandingPrincipal - principal;
+            initialOutstandingPrincipal = calculateInitialOutstandingPrincipal(initialOutstandingPrincipal, principal).toTruncated();
         }
 
         return rv;
@@ -73,34 +73,38 @@ public class PlanGenerator {
     /**
      * Principal = Annuity - Interest (if, calculated interest amount exceeds the initial outstanding principal amount, take initial outstanding principal amount instead)
      */
-    protected double calculatePrincipal(double annuity, double interest, double initialOutstandingPrincipal) {
+    protected Monetary calculatePrincipal(double annuity, double interest, double initialOutstandingPrincipal) {
         if (interest > initialOutstandingPrincipal) {
-            return initialOutstandingPrincipal;
+            return new Monetary(initialOutstandingPrincipal);
         } else {
-            return annuity - interest;
+            return new Monetary(annuity - interest);
         }
     }
 
     /**
      * Annuity = Principal + Interest
      */
-    protected double calculateAnnuity(double principal, double interest) {
-        return principal + interest;
+    protected Monetary calculateAnnuity(double principal, double interest) {
+        return new Monetary(principal + interest);
     }
 
     /**
      *
      */
-    protected double calculateAnnuityPayment(double loanAmount, double interestRateNominal, int numberOfRepayments) {
+    protected Monetary calculateAnnuityPayment(double loanAmount, double interestRateNominal, int numberOfRepayments) {
         double interestRatePerPeriod = interestRateNominal / MONTHS_PER_YEAR;
-        return (loanAmount * interestRatePerPeriod) / (1 - Math.pow(1 + interestRatePerPeriod, -numberOfRepayments));
+        return new Monetary((loanAmount * interestRatePerPeriod) / (1 - Math.pow(1 + interestRatePerPeriod, -numberOfRepayments)));
     }
 
-    protected double calculateRemainingOutstandingPrincipal(double initialOutstandingPrincipal, double principal) {
+    protected Monetary calculateInitialOutstandingPrincipal(double initialOutstandingPrincipal, double principal) {
+        return new Monetary(initialOutstandingPrincipal - principal);
+    }
+
+    protected Monetary calculateRemainingOutstandingPrincipal(double initialOutstandingPrincipal, double principal) {
         if (principal > initialOutstandingPrincipal) {
-            return 0;
+            return new Monetary();
         } else {
-            return initialOutstandingPrincipal - principal;
+            return new Monetary(initialOutstandingPrincipal - principal);
         }
     }
 
