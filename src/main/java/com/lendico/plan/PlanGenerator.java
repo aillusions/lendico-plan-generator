@@ -25,7 +25,6 @@ public class PlanGenerator {
      * @param nominalInterestRate - nominal interest rate (a yearly basis number)
      * @param durationMonths      - duration (number of instalments in months)
      * @param startDate           - Date of Disbursement/Payout
-     * @return
      */
     public List<BorrowerPlanItem> generatePlan(double loanAmount, double nominalInterestRate, int durationMonths, LocalDate startDate) {
         List<BorrowerPlanItem> rv = new ArrayList<>();
@@ -38,17 +37,25 @@ public class PlanGenerator {
             BorrowerPlanItem planItem = new BorrowerPlanItem();
             planItem.setRepaymentDate(payoutDate);
 
+            // Correct
+            planItem.setInitialOutstandingPrincipal(initialOutstandingPrincipal);
+
             double interest = calculateInterest(nominalInterestRate, initialOutstandingPrincipal).toTruncated();
             planItem.setInterest(interest);
 
+            // wrong last
+            // actual:      218.45
+            // expected:    218.37
             double principal = calculatePrincipal(initialAnnuity, interest, initialOutstandingPrincipal).toTruncated();
             planItem.setPrincipal(principal);
 
+            // wrong last
+            // actual:      219.36
+            // expected:    219.28
             double annuity = calculateAnnuity(principal, interest).toTruncated();
             planItem.setAnnuity(annuity);
 
-            planItem.setInitialOutstandingPrincipal(initialOutstandingPrincipal);
-
+            // correct
             double remainingOutstandingPrincipal = calculateRemainingOutstandingPrincipal(initialOutstandingPrincipal, principal).toTruncated();
             planItem.setRemainingOutstandingPrincipal(remainingOutstandingPrincipal);
 
