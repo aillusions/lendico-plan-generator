@@ -7,19 +7,16 @@ public class MonetaryTest {
 
 
     @Test
-    public void testMoneyRaw() {
-        Assert.assertEquals(123.451, new Monetary(123.451).getRawValue(), 0.0);
-    }
-
-    @Test
     public void testMoneyRoundDown() {
-        Assert.assertEquals(12345.1, new Monetary(123.451).centsDouble(), 0.0);
-        Assert.assertEquals(12345, new Monetary(123.451).centsInt());
+        Assert.assertEquals(123.45, new Monetary(123.451).toTruncated(), 0.0);
+        Assert.assertEquals(12345.1, new Monetary(123.451).toCentsDouble(), 0.0);
+        Assert.assertEquals(12345, new Monetary(123.451).toCentsInt());
     }
 
     @Test
     public void testMoneyRoundUp() {
-        Assert.assertEquals(12345.7, new Monetary(123.457).centsDouble(), 0.0);
-        Assert.assertEquals(12346, new Monetary(123.457).centsInt());
+        Assert.assertEquals(123.46, new Monetary(123.457).toTruncated(), 0.0);
+        Assert.assertEquals(12345.7, new Monetary(123.457).toCentsDouble(), 0.0);
+        Assert.assertEquals(12346, new Monetary(123.457).toCentsInt());
     }
 }

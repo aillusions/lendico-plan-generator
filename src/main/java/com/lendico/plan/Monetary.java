@@ -14,15 +14,15 @@ public final class Monetary {
         this(BigDecimal.valueOf(value));
     }
 
-    public double getRawValue() {
-        return value.doubleValue();
+    public double toTruncated() {
+        return toCentsInt() / 100.0;
     }
 
-    public double centsDouble() {
+    public double toCentsDouble() {
         return value.multiply(BigDecimal.valueOf(100)).doubleValue();
     }
 
-    public int centsInt() {
+    public int toCentsInt() {
         return (int) Math.round(value.multiply(BigDecimal.valueOf(100)).doubleValue());
     }
 }
