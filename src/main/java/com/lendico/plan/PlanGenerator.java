@@ -22,16 +22,15 @@ public class PlanGenerator {
      * repayment plans throughout the lifetime of a loan.
      *
      * @param loanAmount          - total loan amount ("total principal amount")
-     * @param interestRateNominal - nominal interest rate (a yearly basis number)
+     * @param nominalInterestRate - nominal interest rate (a yearly basis number)
      * @param durationMonths      - duration (number of instalments in months)
      * @param startDate           - Date of Disbursement/Payout
      * @return
      */
-    public List<BorrowerPlanItem> generatePlan(double loanAmount, double interestRateNominal, int durationMonths, LocalDate startDate) {
+    public List<BorrowerPlanItem> generatePlan(double loanAmount, double nominalInterestRate, int durationMonths, LocalDate startDate) {
         List<BorrowerPlanItem> rv = new ArrayList<>();
 
-        double initialAnnuity =calculateAnnuityPayment(loanAmount, interestRateNominal, durationMonths);
-
+        double initialAnnuity = calculateAnnuityPayment(loanAmount, nominalInterestRate, durationMonths);
         double initialOutstandingPrincipal = loanAmount;
         LocalDate payoutDate = startDate;
 
@@ -39,38 +38,70 @@ public class PlanGenerator {
             BorrowerPlanItem planItem = new BorrowerPlanItem();
             planItem.setRepaymentDate(payoutDate);
 
-            // Interest calculation; Interest = (Nominal-Rate * Days in Month * Initial Outstanding Principal) / days in year
-            double interest = interestRateNominal * DAYS_PER_MONTH * initialOutstandingPrincipal / DAYS_PER_YEAR;
+            double interest = calculateInterest(nominalInterestRate, initialOutstandingPrincipal);
             planItem.setInterest(interest);
 
-            double annuity = initialAnnuity <= initialOutstandingPrincipal ? initialAnnuity : initialOutstandingPrincipal;
+            double principal = calculatePrincipal(initialAnnuity, interest, initialOutstandingPrincipal);
+            planItem.setPrincipal(principal);
+
+            double annuity = calculateAnnuity(principal, interest);
             planItem.setAnnuity(annuity);
 
-            // Principal = Annuity - Interest (if, calculated interest amount exceeds the initial outstanding principal amount, take initial outstanding principal amount instead)
-            double principal = annuity - interest;
-            planItem.setPrincipal(principal);
+            planItem.setInitialOutstandingPrincipal(initialOutstandingPrincipal);
+
+            double remainingOutstandingPrincipal = calculateRemainingOutstandingPrincipal(initialOutstandingPrincipal, principal);
+            planItem.setRemainingOutstandingPrincipal(remainingOutstandingPrincipal);
 
             System.out.println(planItem);
 
             rv.add(planItem);
 
             payoutDate = payoutDate.plusMonths(1);
-            initialOutstandingPrincipal = loanAmount - principal;
+            initialOutstandingPrincipal = initialOutstandingPrincipal - principal;
         }
-
 
         return rv;
     }
 
     /**
-     * @param loanAmount          - Loan Amount
-     * @param interestRateNominal - Interest Rate (per year)
-     * @param numberOfRepayments  - Length of Annuity (number of periods in months)
-     * @return
+     * Interest = (Nominal-Rate * Days in Month * Initial Outstanding Principal) / days in year
      */
-    public double calculateAnnuityPayment(double loanAmount, double interestRateNominal, int numberOfRepayments) {
+    protected double calculateInterest(double nominalInterestRate, double initialOutstandingPrincipal) {
+        return (nominalInterestRate * DAYS_PER_MONTH * initialOutstandingPrincipal) / DAYS_PER_YEAR;
+    }
+
+    /**
+     * Principal = Annuity - Interest (if, calculated interest amount exceeds the initial outstanding principal amount, take initial outstanding principal amount instead)
+     */
+    protected double calculatePrincipal(double annuity, double interest, double initialOutstandingPrincipal) {
+        if (interest > initialOutstandingPrincipal) {
+            return initialOutstandingPrincipal;
+        } else {
+            return annuity - interest;
+        }
+    }
+
+    /**
+     * Annuity = Principal + Interest
+     */
+    protected double calculateAnnuity(double principal, double interest) {
+        return principal + interest;
+    }
+
+    /**
+     *
+     */
+    protected double calculateAnnuityPayment(double loanAmount, double interestRateNominal, int numberOfRepayments) {
         double interestRatePerPeriod = interestRateNominal / MONTHS_PER_YEAR;
         return (loanAmount * interestRatePerPeriod) / (1 - Math.pow(1 + interestRatePerPeriod, -numberOfRepayments));
+    }
+
+    protected double calculateRemainingOutstandingPrincipal(double initialOutstandingPrincipal, double principal) {
+        if (principal > initialOutstandingPrincipal) {
+            return 0;
+        } else {
+            return initialOutstandingPrincipal - principal;
+        }
     }
 
 }
