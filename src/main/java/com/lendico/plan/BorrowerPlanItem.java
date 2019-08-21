@@ -4,18 +4,18 @@ import java.time.LocalDate;
 
 public class BorrowerPlanItem {
 
-    private float borrowerPaymentAmount;
+    private double borrowerPaymentAmount;
     private LocalDate date;
-    private float initialOutstandingPrincipal;
-    private float interest;
-    private float principal;
-    private float remainingOutstandingPrincipal;
+    private double initialOutstandingPrincipal;
+    private double interest;
+    private double principal;
+    private double remainingOutstandingPrincipal;
 
-    public float getBorrowerPaymentAmount() {
+    public double getBorrowerPaymentAmount() {
         return borrowerPaymentAmount;
     }
 
-    public void setBorrowerPaymentAmount(float borrowerPaymentAmount) {
+    public void setBorrowerPaymentAmount(double borrowerPaymentAmount) {
         this.borrowerPaymentAmount = borrowerPaymentAmount;
     }
 
@@ -27,35 +27,35 @@ public class BorrowerPlanItem {
         this.date = date;
     }
 
-    public float getInitialOutstandingPrincipal() {
+    public double getInitialOutstandingPrincipal() {
         return initialOutstandingPrincipal;
     }
 
-    public void setInitialOutstandingPrincipal(float initialOutstandingPrincipal) {
+    public void setInitialOutstandingPrincipal(double initialOutstandingPrincipal) {
         this.initialOutstandingPrincipal = initialOutstandingPrincipal;
     }
 
-    public float getInterest() {
+    public double getInterest() {
         return interest;
     }
 
-    public void setInterest(float interest) {
+    public void setInterest(double interest) {
         this.interest = interest;
     }
 
-    public float getPrincipal() {
+    public double getPrincipal() {
         return principal;
     }
 
-    public void setPrincipal(float principal) {
+    public void setPrincipal(double principal) {
         this.principal = principal;
     }
 
-    public float getRemainingOutstandingPrincipal() {
+    public double getRemainingOutstandingPrincipal() {
         return remainingOutstandingPrincipal;
     }
 
-    public void setRemainingOutstandingPrincipal(float remainingOutstandingPrincipal) {
+    public void setRemainingOutstandingPrincipal(double remainingOutstandingPrincipal) {
         this.remainingOutstandingPrincipal = remainingOutstandingPrincipal;
     }
 }
