@@ -55,7 +55,7 @@ public class PlanGeneratorTest {
         double interestRateNominal = 0.02;
         int durationMonths = 12;
 
-        Assert.assertEquals(84.24, instance.calculateAnnuityPayment(loanAmount, interestRateNominal, durationMonths).toTruncated(), 0.0);
+        Assert.assertEquals(84.24, instance.deriveAnnuity(loanAmount, interestRateNominal, durationMonths).toTruncated(), 0.0);
     }
 
     @Test
@@ -65,6 +65,6 @@ public class PlanGeneratorTest {
         double interestRateNominal = 0.05;
         int durationMonths = 24;
 
-        Assert.assertEquals(219.36, instance.calculateAnnuityPayment(loanAmount, interestRateNominal, durationMonths).toTruncated(), 0.0);
+        Assert.assertEquals(219.36, instance.deriveAnnuity(loanAmount, interestRateNominal, durationMonths).toTruncated(), 0.0);
     }
 }

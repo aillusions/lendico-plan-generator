@@ -29,16 +29,16 @@ public class PlanGenerator {
     public List<BorrowerPlanItem> generatePlan(double loanAmount, double nominalInterestRate, int durationMonths, LocalDate startDate) {
         final List<BorrowerPlanItem> rv = new ArrayList<>();
 
-        double derivedAnnuity = calculateAnnuityPayment(loanAmount, nominalInterestRate, durationMonths).toTruncated();
+        double derivedAnnuity = deriveAnnuity(loanAmount, nominalInterestRate, durationMonths).toTruncated();
         double initialOutstandingPrincipal = loanAmount;
         LocalDate payoutDate = startDate;
 
         for (int i = 0; i < durationMonths; i++) {
             BorrowerPlanItem planItem = createBorrowerPlanItem(nominalInterestRate, payoutDate, derivedAnnuity, initialOutstandingPrincipal);
-            rv.add(planItem);
 
             payoutDate = payoutDate.plusMonths(1);
             initialOutstandingPrincipal = calculateInitialOutstandingPrincipal(initialOutstandingPrincipal, planItem.getPrincipal()).toTruncated();
+            rv.add(planItem);
         }
 
         return rv;
@@ -92,9 +92,9 @@ public class PlanGenerator {
     }
 
     /**
-     *
+     * see http://financeformulas.net/Annuity_Payment_Formula.html as reference
      */
-    protected Monetary calculateAnnuityPayment(double loanAmount, double interestRateNominal, int numberOfRepayments) {
+    protected Monetary deriveAnnuity(double loanAmount, double interestRateNominal, int numberOfRepayments) {
         double interestRatePerPeriod = interestRateNominal / MONTHS_PER_YEAR;
         return new Monetary((loanAmount * interestRatePerPeriod) / (1 - Math.pow(1 + interestRatePerPeriod, -numberOfRepayments)));
     }
