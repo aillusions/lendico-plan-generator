@@ -19,6 +19,7 @@ import java.util.List;
 public class PlanGeneratorController {
 
     private static final Logger logger = LoggerFactory.getLogger(PlanGeneratorController.class);
+    public static final String REQUEST_PATH = "/generate-plan";
 
     @Autowired
     protected PlanGenerator generator;
@@ -26,7 +27,7 @@ public class PlanGeneratorController {
     @Autowired
     protected DataMapper dataMapper;
 
-    @PostMapping(path = "/generate-plan", headers = "Accept=application/json")
+    @PostMapping(path = REQUEST_PATH, headers = "Accept=application/json")
     @ResponseBody
     public BorrowerPlanDto generatePlan(@RequestBody @Valid BorrowerPlanRequestDto requestDto) {
 
