@@ -1,7 +1,10 @@
 package com.lendico.plan.generator.data;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 
+@Data
 public final class Monetary {
 
     private static final double CENTS_PER_COIN = 100.0;

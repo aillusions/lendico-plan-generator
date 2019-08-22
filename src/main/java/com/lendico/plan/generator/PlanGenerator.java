@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -38,7 +38,7 @@ public class PlanGenerator {
 
         assertValidArguments(loanAmount, nominalInterestRate, durationMonths, startDate);
 
-        final List<BorrowerPlanItem> rv = new ArrayList<>();
+        final List<BorrowerPlanItem> rv = new LinkedList<>();
 
         double derivedAnnuity = deriveAnnuity(loanAmount, nominalInterestRate, durationMonths).toTruncated();
         double initialOutstandingPrincipal = loanAmount;

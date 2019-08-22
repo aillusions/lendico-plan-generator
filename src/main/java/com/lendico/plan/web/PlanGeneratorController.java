@@ -2,6 +2,11 @@ package com.lendico.plan.web;
 
 import com.lendico.plan.generator.PlanGenerator;
 import com.lendico.plan.generator.data.BorrowerPlanItem;
+import com.lendico.plan.web.data.BorrowerPlanDto;
+import com.lendico.plan.web.data.BorrowerPlanItemDto;
+import com.lendico.plan.web.data.BorrowerPlanRequestDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,12 +19,16 @@ import java.util.stream.Collectors;
 @RestController
 public class PlanGeneratorController {
 
+    private static final Logger logger = LoggerFactory.getLogger(PlanGeneratorController.class);
+
     private PlanGenerator generator = new PlanGenerator();
 
     // http://localhost:8080/generate-plan
     @PostMapping(path = "/generate-plan")
     @ResponseBody
     public BorrowerPlanDto generatePlan(@RequestBody @Valid BorrowerPlanRequestDto requestDto) {
+
+        logger.debug("Generate plan request accepted: {}", requestDto);
 
         double nominalInterestRate = requestDto.getNominalRate() / 100;
 
