@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 public final class Monetary {
 
     private static final double CENTS_PER_COIN = 100.0;
-    private static final BigDecimal CENTS_PER_COIN_BD = BigDecimal.valueOf(CENTS_PER_COIN);
 
     private final BigDecimal value;
 
@@ -22,14 +21,6 @@ public final class Monetary {
     }
 
     public double toTruncated() {
-        return toCentsInt() / CENTS_PER_COIN;
-    }
-
-    public double toCentsDouble() {
-        return value.multiply(CENTS_PER_COIN_BD).doubleValue();
-    }
-
-    public int toCentsInt() {
-        return (int) Math.round(value.multiply(CENTS_PER_COIN_BD).doubleValue());
+        return (int) Math.round(value.multiply(BigDecimal.valueOf(CENTS_PER_COIN)).doubleValue()) / CENTS_PER_COIN;
     }
 }
