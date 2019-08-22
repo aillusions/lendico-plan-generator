@@ -46,6 +46,7 @@ mvn clean package
 * To run lendico-plan-generator as docker container:
 
 <pre>
+    cd docker
     docker-compose up
     # afterwards: docker-compose down
 </pre>
