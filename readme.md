@@ -19,7 +19,10 @@ mvn clean package
 
 
     
-* To run: mvn spring-boot:run
+* To run:
+<pre>
+ mvn spring-boot:run
+</pre>
      
 * To build/push Docker image 
 
@@ -48,11 +51,12 @@ mvn clean package
 Response: 
 
 <pre>
+
 {
   "borrowerPlanItems": [
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2018-01-01",
+      "date": "2018-01-01T00:00:01Z",
       "initialOutstandingPrincipal": "5000.0",
       "interest": "20.83",
       "principal": "198.53",
@@ -60,7 +64,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2018-02-01",
+      "date": "2018-02-01T00:00:01Z",
       "initialOutstandingPrincipal": "4801.47",
       "interest": "20.01",
       "principal": "199.35",
@@ -68,7 +72,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2018-03-01",
+      "date": "2018-03-01T00:00:01Z",
       "initialOutstandingPrincipal": "4602.12",
       "interest": "19.18",
       "principal": "200.18",
@@ -76,7 +80,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2018-04-01",
+      "date": "2018-04-01T00:00:01Z",
       "initialOutstandingPrincipal": "4401.94",
       "interest": "18.34",
       "principal": "201.02",
@@ -84,7 +88,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2018-05-01",
+      "date": "2018-05-01T00:00:01Z",
       "initialOutstandingPrincipal": "4200.92",
       "interest": "17.5",
       "principal": "201.86",
@@ -92,7 +96,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2018-06-01",
+      "date": "2018-06-01T00:00:01Z",
       "initialOutstandingPrincipal": "3999.06",
       "interest": "16.66",
       "principal": "202.7",
@@ -100,7 +104,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2018-07-01",
+      "date": "2018-07-01T00:00:01Z",
       "initialOutstandingPrincipal": "3796.36",
       "interest": "15.82",
       "principal": "203.54",
@@ -108,7 +112,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2018-08-01",
+      "date": "2018-08-01T00:00:01Z",
       "initialOutstandingPrincipal": "3592.82",
       "interest": "14.97",
       "principal": "204.39",
@@ -116,7 +120,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2018-09-01",
+      "date": "2018-09-01T00:00:01Z",
       "initialOutstandingPrincipal": "3388.43",
       "interest": "14.12",
       "principal": "205.24",
@@ -124,7 +128,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2018-10-01",
+      "date": "2018-10-01T00:00:01Z",
       "initialOutstandingPrincipal": "3183.19",
       "interest": "13.26",
       "principal": "206.1",
@@ -132,7 +136,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2018-11-01",
+      "date": "2018-11-01T00:00:01Z",
       "initialOutstandingPrincipal": "2977.09",
       "interest": "12.4",
       "principal": "206.96",
@@ -140,7 +144,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2018-12-01",
+      "date": "2018-12-01T00:00:01Z",
       "initialOutstandingPrincipal": "2770.13",
       "interest": "11.54",
       "principal": "207.82",
@@ -148,7 +152,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2019-01-01",
+      "date": "2019-01-01T00:00:01Z",
       "initialOutstandingPrincipal": "2562.31",
       "interest": "10.68",
       "principal": "208.68",
@@ -156,7 +160,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2019-02-01",
+      "date": "2019-02-01T00:00:01Z",
       "initialOutstandingPrincipal": "2353.63",
       "interest": "9.81",
       "principal": "209.55",
@@ -164,7 +168,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2019-03-01",
+      "date": "2019-03-01T00:00:01Z",
       "initialOutstandingPrincipal": "2144.08",
       "interest": "8.93",
       "principal": "210.43",
@@ -172,7 +176,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2019-04-01",
+      "date": "2019-04-01T00:00:01Z",
       "initialOutstandingPrincipal": "1933.65",
       "interest": "8.06",
       "principal": "211.3",
@@ -180,7 +184,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2019-05-01",
+      "date": "2019-05-01T00:00:01Z",
       "initialOutstandingPrincipal": "1722.35",
       "interest": "7.18",
       "principal": "212.18",
@@ -188,7 +192,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2019-06-01",
+      "date": "2019-06-01T00:00:01Z",
       "initialOutstandingPrincipal": "1510.17",
       "interest": "6.29",
       "principal": "213.07",
@@ -196,7 +200,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2019-07-01",
+      "date": "2019-07-01T00:00:01Z",
       "initialOutstandingPrincipal": "1297.1",
       "interest": "5.4",
       "principal": "213.96",
@@ -204,7 +208,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2019-08-01",
+      "date": "2019-08-01T00:00:01Z",
       "initialOutstandingPrincipal": "1083.14",
       "interest": "4.51",
       "principal": "214.85",
@@ -212,7 +216,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2019-09-01",
+      "date": "2019-09-01T00:00:01Z",
       "initialOutstandingPrincipal": "868.29",
       "interest": "3.62",
       "principal": "215.74",
@@ -220,7 +224,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2019-10-01",
+      "date": "2019-10-01T00:00:01Z",
       "initialOutstandingPrincipal": "652.55",
       "interest": "2.72",
       "principal": "216.64",
@@ -228,7 +232,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.36",
-      "date": "2019-11-01",
+      "date": "2019-11-01T00:00:01Z",
       "initialOutstandingPrincipal": "435.91",
       "interest": "1.82",
       "principal": "217.54",
@@ -236,7 +240,7 @@ Response:
     },
     {
       "borrowerPaymentAmount": "219.28",
-      "date": "2019-12-01",
+      "date": "2019-12-01T00:00:01Z",
       "initialOutstandingPrincipal": "218.37",
       "interest": "0.91",
       "principal": "218.37",
