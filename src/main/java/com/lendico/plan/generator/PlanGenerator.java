@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class PlanGenerator {
     public List<BorrowerPlanItem> generatePlan(double loanAmount,
                                                double nominalInterestPercent,
                                                int durationMonths,
-                                               LocalDate startDate) {
+                                               ZonedDateTime startDate) {
         logger.debug(
                 "generatePlan called with arguments: loanAmount: {}, nominalInterestRate: {}, durationMonths: {}, startDate: {}",
                 loanAmount,
@@ -56,7 +56,7 @@ public class PlanGenerator {
 
         for (int i = 0; i < durationMonths; i++) {
 
-            final LocalDate payoutDate = startDate.plusMonths(i);
+            final ZonedDateTime payoutDate = startDate.plusMonths(i);
 
             final BorrowerPlanItem planItem = createBorrowerPlanItem(
                     nominalInterestRate,
@@ -85,7 +85,7 @@ public class PlanGenerator {
     protected void assertValidArguments(double loanAmount,
                                         double nominalInterestRate,
                                         int durationMonths,
-                                        LocalDate startDate) {
+                                        ZonedDateTime startDate) {
 
         if (loanAmount <= 0) {
             throw new IllegalArgumentException(
@@ -111,7 +111,7 @@ public class PlanGenerator {
     }
 
     protected BorrowerPlanItem createBorrowerPlanItem(double nominalInterestRate,
-                                                      LocalDate payoutDate,
+                                                      ZonedDateTime payoutDate,
                                                       double derivedAnnuity,
                                                       double outstandingPrincipal) {
 

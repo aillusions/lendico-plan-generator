@@ -1,9 +1,7 @@
 package com.lendico.plan.web.data;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.lendico.plan.web.serializer.CustomDateTimeDeserializer;
-import com.lendico.plan.web.serializer.CustomDateTimeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,6 +31,5 @@ public class BorrowerPlanRequestDto {
 
     @NotNull
     @JsonDeserialize(using = CustomDateTimeDeserializer.class)
-    @JsonSerialize(using = CustomDateTimeSerializer.class)
     private ZonedDateTime startDate;
 }

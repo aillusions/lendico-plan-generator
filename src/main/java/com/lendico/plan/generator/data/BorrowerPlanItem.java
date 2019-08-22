@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +18,7 @@ public class BorrowerPlanItem {
      */
     private double annuity;
 
-    private LocalDate repaymentDate;
+    private ZonedDateTime repaymentDate;
     private double initialOutstandingPrincipal;
     private double interest;
     private double principal;

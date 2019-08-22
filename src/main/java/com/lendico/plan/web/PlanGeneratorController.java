@@ -36,7 +36,7 @@ public class PlanGeneratorController {
                 requestDto.getLoanAmount(),
                 requestDto.getNominalRate(),
                 requestDto.getDuration(),
-                requestDto.getStartDate().toLocalDate()
+                requestDto.getStartDate()
         );
 
         return dataMapper.mapBorrowerPlanDto(generatedItems);

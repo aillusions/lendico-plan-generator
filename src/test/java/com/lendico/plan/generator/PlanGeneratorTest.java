@@ -4,7 +4,7 @@ import com.lendico.plan.generator.data.BorrowerPlanItem;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public class PlanGeneratorTest {
@@ -12,7 +12,7 @@ public class PlanGeneratorTest {
     private static final double SOME_LOAN = 1000;
     private static final double SOME_INTEREST_PERCENT = 5.00;
     private static final int SOME_DURATION = 12;
-    private static final LocalDate SOME_DATE = LocalDate.now();
+    private static final ZonedDateTime SOME_DATE = ZonedDateTime.now();
 
     private static final double REFERENCE_LOAN = 5000.0;
     private static final double REFERENCE_INTEREST_PERCENT = 5.00;

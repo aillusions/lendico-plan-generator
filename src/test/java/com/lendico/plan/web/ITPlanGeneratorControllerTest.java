@@ -38,7 +38,7 @@ public class ITPlanGeneratorControllerTest {
     }
 
     @Test
-    public void shouldCallGeneratePlan() throws Exception {
+    public void shouldGeneratePlan() throws Exception {
         String requestJson = asJsonString(new BorrowerPlanRequestDto(SOME_DOUBLE, SOME_DOUBLE, SOME_INT, SOME_DATE));
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/generate-plan")
@@ -48,7 +48,7 @@ public class ITPlanGeneratorControllerTest {
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(MockMvcResultMatchers.content().string("[{\"id\":1,\"description\":\"Lorem ipsum\",\"title\":\"Foo\"},{\"id\":2,\"description\":\"Lorem ipsum\",\"title\":\"Bar\"}]"));
+                .andExpect(MockMvcResultMatchers.content().string("{\"borrowerPlanItems\":[{\"borrowerPaymentAmount\":\"0.09\",\"date\":\"2019-08-22\",\"initialOutstandingPrincipal\":\"1.12\",\"interest\":\"0.0\",\"principal\":\"0.09\",\"remainingOutstandingPrincipal\":\"1.03\"},{\"borrowerPaymentAmount\":\"0.09\",\"date\":\"2019-09-22\",\"initialOutstandingPrincipal\":\"1.03\",\"interest\":\"0.0\",\"principal\":\"0.09\",\"remainingOutstandingPrincipal\":\"0.94\"},{\"borrowerPaymentAmount\":\"0.09\",\"date\":\"2019-10-22\",\"initialOutstandingPrincipal\":\"0.94\",\"interest\":\"0.0\",\"principal\":\"0.09\",\"remainingOutstandingPrincipal\":\"0.85\"},{\"borrowerPaymentAmount\":\"0.09\",\"date\":\"2019-11-22\",\"initialOutstandingPrincipal\":\"0.85\",\"interest\":\"0.0\",\"principal\":\"0.09\",\"remainingOutstandingPrincipal\":\"0.76\"},{\"borrowerPaymentAmount\":\"0.09\",\"date\":\"2019-12-22\",\"initialOutstandingPrincipal\":\"0.76\",\"interest\":\"0.0\",\"principal\":\"0.09\",\"remainingOutstandingPrincipal\":\"0.67\"},{\"borrowerPaymentAmount\":\"0.09\",\"date\":\"2020-01-22\",\"initialOutstandingPrincipal\":\"0.67\",\"interest\":\"0.0\",\"principal\":\"0.09\",\"remainingOutstandingPrincipal\":\"0.58\"},{\"borrowerPaymentAmount\":\"0.09\",\"date\":\"2020-02-22\",\"initialOutstandingPrincipal\":\"0.58\",\"interest\":\"0.0\",\"principal\":\"0.09\",\"remainingOutstandingPrincipal\":\"0.49\"},{\"borrowerPaymentAmount\":\"0.09\",\"date\":\"2020-03-22\",\"initialOutstandingPrincipal\":\"0.49\",\"interest\":\"0.0\",\"principal\":\"0.09\",\"remainingOutstandingPrincipal\":\"0.4\"},{\"borrowerPaymentAmount\":\"0.09\",\"date\":\"2020-04-22\",\"initialOutstandingPrincipal\":\"0.4\",\"interest\":\"0.0\",\"principal\":\"0.09\",\"remainingOutstandingPrincipal\":\"0.31\"},{\"borrowerPaymentAmount\":\"0.09\",\"date\":\"2020-05-22\",\"initialOutstandingPrincipal\":\"0.31\",\"interest\":\"0.0\",\"principal\":\"0.09\",\"remainingOutstandingPrincipal\":\"0.22\"},{\"borrowerPaymentAmount\":\"0.09\",\"date\":\"2020-06-22\",\"initialOutstandingPrincipal\":\"0.22\",\"interest\":\"0.0\",\"principal\":\"0.09\",\"remainingOutstandingPrincipal\":\"0.13\"},{\"borrowerPaymentAmount\":\"0.09\",\"date\":\"2020-07-22\",\"initialOutstandingPrincipal\":\"0.13\",\"interest\":\"0.0\",\"principal\":\"0.09\",\"remainingOutstandingPrincipal\":\"0.04\"}]}"));
     }
 
     private static String asJsonString(final Object obj) {

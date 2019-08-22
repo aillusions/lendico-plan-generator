@@ -19,12 +19,12 @@ public class DataMapper {
 
     public BorrowerPlanItemDto mapBorrowerPlanItemDto(BorrowerPlanItem item) {
         BorrowerPlanItemDto rv = new BorrowerPlanItemDto();
-        rv.setBorrowerPaymentAmount(String.valueOf(item.getAnnuity()));
-        rv.setDate(item.getRepaymentDate().toString());
-        rv.setInitialOutstandingPrincipal(String.valueOf(item.getInitialOutstandingPrincipal()));
-        rv.setInterest(String.valueOf(item.getInterest()));
-        rv.setPrincipal(String.valueOf(item.getPrincipal()));
-        rv.setRemainingOutstandingPrincipal(String.valueOf(item.getRemainingOutstandingPrincipal()));
+        rv.setBorrowerPaymentAmount(item.getAnnuity());
+        rv.setDate(item.getRepaymentDate());
+        rv.setInitialOutstandingPrincipal(item.getInitialOutstandingPrincipal());
+        rv.setInterest(item.getInterest());
+        rv.setPrincipal(item.getPrincipal());
+        rv.setRemainingOutstandingPrincipal(item.getRemainingOutstandingPrincipal());
         return rv;
     }
 }

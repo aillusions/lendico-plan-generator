@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.*;
 
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -17,8 +16,7 @@ public class PlanGeneratorControllerTest {
 
     private static final double SOME_DOUBLE = 1.12d;
     private static final int SOME_INT = 12;
-    private static final LocalDate SOME_DATE = LocalDate.now();
-    private static final ZonedDateTime SOME_DATE_TIME = ZonedDateTime.now();
+    private static final ZonedDateTime SOME_DATE = ZonedDateTime.now();
 
     private final PlanGeneratorController controller = new PlanGeneratorController();
 
@@ -51,7 +49,7 @@ public class PlanGeneratorControllerTest {
                 SOME_DOUBLE,
                 SOME_DOUBLE,
                 SOME_INT,
-                SOME_DATE_TIME);
+                SOME_DATE);
 
         controller.generatePlan(requestDto);
 
