@@ -95,16 +95,7 @@ public class PlanGenerator {
 
         if (nominalInterestRate <= 0) {
             throw new IllegalArgumentException(
-                    String.format("Unable to generate plan: too small nominalInterestRate: {}", nominalInterestRate)
-            );
-        }
-
-        if (nominalInterestRate > 1) {
-            throw new IllegalArgumentException(
-                    String.format(
-                            "Unable to generate plan: nominalInterestRate expected to be in range [0..1]. Actual: {}",
-                            nominalInterestRate
-                    )
+                    String.format("Unable to generate plan: nominalInterestRate expected to be in range [0..1]. Actual: {}", nominalInterestRate)
             );
         }
 

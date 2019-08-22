@@ -14,9 +14,6 @@ public class PlanGeneratorTest {
     private static final int SOME_DURATION = 12;
     private static final LocalDate SOME_DATE = LocalDate.now();
 
-    private static final int ZERO = 0;
-    private static final int SOME_NEGATIVE = -2;
-
     private static final double REFERENCE_LOAN = 5000.0;
     private static final double REFERENCE_INTEREST_PERCENT = 5.00;
     private static final double REFERENCE_INTEREST_RATE = 0.05;
@@ -28,22 +25,22 @@ public class PlanGeneratorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnNegativeLoan() {
-        instance.generatePlan(SOME_NEGATIVE, SOME_INTEREST_PERCENT, SOME_DURATION, SOME_DATE);
+        instance.generatePlan(-1, SOME_INTEREST_PERCENT, SOME_DURATION, SOME_DATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnZeroLoan() {
-        instance.generatePlan(ZERO, SOME_INTEREST_PERCENT, SOME_DURATION, SOME_DATE);
+        instance.generatePlan(0, SOME_INTEREST_PERCENT, SOME_DURATION, SOME_DATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnNegativeInterest() {
-        instance.generatePlan(SOME_LOAN, SOME_NEGATIVE, SOME_DURATION, SOME_DATE);
+        instance.generatePlan(SOME_LOAN, -1, SOME_DURATION, SOME_DATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnZeroInterest() {
-        instance.generatePlan(SOME_LOAN, ZERO, SOME_DURATION, SOME_DATE);
+        instance.generatePlan(SOME_LOAN, 0, SOME_DURATION, SOME_DATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -53,17 +50,17 @@ public class PlanGeneratorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnNegativeDuration() {
-        instance.generatePlan(SOME_LOAN, SOME_INTEREST_PERCENT, SOME_NEGATIVE, SOME_DATE);
+        instance.generatePlan(SOME_LOAN, SOME_INTEREST_PERCENT, -1, SOME_DATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnZeroDuration() {
-        instance.generatePlan(SOME_LOAN, SOME_INTEREST_PERCENT, ZERO, SOME_DATE);
+        instance.generatePlan(SOME_LOAN, SOME_INTEREST_PERCENT, 0, SOME_DATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnInvalidStartData() {
-        instance.generatePlan(SOME_LOAN, SOME_INTEREST_PERCENT, ZERO, null);
+        instance.generatePlan(SOME_LOAN, SOME_INTEREST_PERCENT, SOME_DURATION, null);
     }
 
     @Test
