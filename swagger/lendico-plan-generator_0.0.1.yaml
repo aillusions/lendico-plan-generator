@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  title: Plan generator
+  description:  In order to inform borrowers about the final repayment schedule, we need to have pre-calculated repayment plans throughout the lifetime of a loan.
+  version: "0.0.1"
+  termsOfService: 'https://lendico.de/terms'
+  contact:
+    email: aillusions@gmail.com
+servers:
+  - url: 'http://localhost:8080'
+paths:
+
+  /generate-plan:
+    post:
+      summary: Generates repayment schedule plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BorrowerPlanRequestDto'
+      responses:
+        '200':
+          description: Generated plan items
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BorrowerPlanDto'
+        '401':
+          description: Invalid Argument(s)
+
+components:
+
+  schemas:
+
+    BorrowerPlanDto:
+      type: object
+      properties:
+        thisPageItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/BorrowerPlanItemDto'
+
+    BorrowerPlanItemDto:
+      type: object
+      properties:
+        borrowerPaymentAmount:
+          type: string
+          example: '219.36'
+        date:
+          type: string
+          example: '2018-01-01T00:00:00Z'
+        initialOutstandingPrincipal:
+          type: string
+          example: '5000.00'
+        interest:
+          type: string
+          example: '20.83'
+        principal:
+          type: string
+          example: '198.53'
+        remainingOutstandingPrincipal:
+          type: string
+          example: '4801.47'
+
+
+    BorrowerPlanRequestDto:
+      type: object
+      properties:
+        loanAmount:
+          type: string
+          example: '5000'
+        nominalRate:
+          type: string
+          example: '5.0'
+        duration:
+          type: integer
+          example: 24
+        startDate:
+          type: string
+          example: '2019-11-01T00:00:01Z'
+
+

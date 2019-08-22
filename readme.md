@@ -1,4 +1,15 @@
 
+
+* Docker image: 
+<pre>
+    aillusions/lendico-plan-generator:1.0.0
+</pre>
+    
+* Swagger documentation: 
+<pre>
+ https://app.swaggerhub.com/apis-docs/alex-platin/lendico-plan-generator/0.0.1
+</pre>
+
 Borrower plan generator:
 
 * To build: 
