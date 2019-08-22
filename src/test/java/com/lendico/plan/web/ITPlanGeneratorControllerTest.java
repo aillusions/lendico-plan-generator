@@ -1,5 +1,6 @@
 package com.lendico.plan.web;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.nio.charset.Charset;
 
@@ -27,19 +29,83 @@ public class ITPlanGeneratorControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void shouldValidateInput() throws Exception {
+    public void shouldValidateLoan() throws Exception {
         String requestJson = "{" +
                 "\"loanAmount\": \"0\"," + // <<------ Unaccepted value
                 "\"nominalRate\": \"5.0\"," +
                 "\"duration\": 24," +
                 "\"startDate\": \"2018-01-01T00:00:01Z\"" +
                 "}";
-        mockMvc.perform(
+
+        Exception result = mockMvc.perform(
                 MockMvcRequestBuilders.post(PlanGeneratorController.REQUEST_PATH)
                         .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andReturn().getResolvedException();
+
+        Assert.assertTrue(result instanceof MethodArgumentNotValidException);
+    }
+
+    @Test
+    public void shouldValidateRate() throws Exception {
+        String requestJson = "{" +
+                "\"loanAmount\": \"5000\"," +
+                "\"nominalRate\": \"0\"," + // <<------ Unaccepted value
+                "\"duration\": 24," +
+                "\"startDate\": \"2018-01-01T00:00:01Z\"" +
+                "}";
+
+        Exception result = mockMvc.perform(
+                MockMvcRequestBuilders.post(PlanGeneratorController.REQUEST_PATH)
+                        .content(requestJson)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andReturn().getResolvedException();
+
+        Assert.assertTrue(result instanceof MethodArgumentNotValidException);
+    }
+
+    @Test
+    public void shouldValidateDuration() throws Exception {
+        String requestJson = "{" +
+                "\"loanAmount\": \"5000\"," +
+                "\"nominalRate\": \"5.0\"," +
+                "\"duration\": 0," + // <<------ Unaccepted value
+                "\"startDate\": \"2018-01-01T00:00:01Z\"" +
+                "}";
+
+        Exception result = mockMvc.perform(
+                MockMvcRequestBuilders.post(PlanGeneratorController.REQUEST_PATH)
+                        .content(requestJson)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andReturn().getResolvedException();
+
+        Assert.assertTrue(result instanceof MethodArgumentNotValidException);
+    }
+
+    @Test
+    public void shouldValidateStartDate() throws Exception {
+        String requestJson = "{" +
+                "\"loanAmount\": \"5000\"," +
+                "\"nominalRate\": \"0\"," +
+                "\"duration\": 24," +
+                "\"startDate\": null " + // <<------ Unaccepted value
+                "}";
+
+        Exception result = mockMvc.perform(
+                MockMvcRequestBuilders.post(PlanGeneratorController.REQUEST_PATH)
+                        .content(requestJson)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andReturn().getResolvedException();
+
+        Assert.assertTrue(result instanceof MethodArgumentNotValidException);
     }
 
     @Test
