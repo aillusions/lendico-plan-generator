@@ -9,13 +9,17 @@ import java.util.List;
 
 public class PlanGeneratorTest {
 
-    private static final double SOME_LOAN = 5000;
+    private static final double SOME_LOAN = 1000;
     private static final double SOME_RATE = 0.05;
     private static final int SOME_DURATION = 12;
 
     private static final int ZERO = 0;
     private static final int SOME_NEGATIVE = -2;
     private static final double SOME_POSITIVE_MORE_THAN_ONE = 1.2;
+
+    private static final double REFERENCE_LOAN = 5000.0;
+    private static final double REFERENCE_RATE = 0.05;
+    private static final int REFERENCE_DURATION = 24;
 
     private PlanGenerator instance = new PlanGenerator();
 
@@ -62,13 +66,15 @@ public class PlanGeneratorTest {
     @Test
     public void numberOfItemsShouldBeCorresponding() {
         Assert.assertEquals(1, instance.generatePlan(SOME_LOAN, SOME_RATE, 1, LocalDate.now()).size());
-        Assert.assertEquals(12, instance.generatePlan(SOME_LOAN, SOME_RATE, SOME_DURATION, LocalDate.now()).size());
+        Assert.assertEquals(12, instance.generatePlan(SOME_LOAN, SOME_RATE, 12, LocalDate.now()).size());
         Assert.assertEquals(24, instance.generatePlan(SOME_LOAN, SOME_RATE, 24, LocalDate.now()).size());
     }
 
     @Test
-    public void testComputations() {
-        List<BorrowerPlanItem> plan = instance.generatePlan(5000, 0.05, 24, LocalDate.now());
+    public void testGeneratedPlanItems() {
+        List<BorrowerPlanItem> plan = instance.generatePlan(REFERENCE_LOAN, REFERENCE_RATE, REFERENCE_DURATION, LocalDate.now());
+
+        Assert.assertEquals(REFERENCE_DURATION, plan.size());
 
         BorrowerPlanItem firstItem = plan.get(0);
         BorrowerPlanItem secondItem = plan.get(1);
@@ -94,12 +100,29 @@ public class PlanGeneratorTest {
     }
 
     @Test
-    public void shouldCalculateAnnuityPayment2Years() {
+    public void shouldCalculateDerivedAnnuity() {
+        Assert.assertEquals(219.36, instance.deriveAnnuity(REFERENCE_LOAN, REFERENCE_RATE, REFERENCE_DURATION).toTruncated(), 0.0);
+    }
 
-        double loanAmount = 5000.0;
-        double interestRateNominal = 0.05;
-        int durationMonths = 24;
+    @Test
+    public void shouldCalculateRemainingOutstandingPrincipal() {
+        Assert.assertEquals(900, instance.calculateRemainingOutstandingPrincipal(1000, 100).toTruncated(), 0.0);
+        Assert.assertEquals(0, instance.calculateRemainingOutstandingPrincipal(0, 100).toTruncated(), 0.0);
+    }
 
-        Assert.assertEquals(219.36, instance.deriveAnnuity(loanAmount, interestRateNominal, durationMonths).toTruncated(), 0.0);
+    @Test
+    public void shouldCalculateAnnuity() {
+        Assert.assertEquals(300, instance.calculateAnnuity(200, 100).toTruncated(), 0.0);
+    }
+
+    @Test
+    public void shouldCalculatePrincipal() {
+        Assert.assertEquals(100, instance.calculatePrincipal(200, 100, 1000).toTruncated(), 0.0);
+        Assert.assertEquals(10, instance.calculatePrincipal(200, 100, 10).toTruncated(), 0.0);
+    }
+
+    @Test
+    public void shouldCalculateInterest() {
+        Assert.assertEquals(0.83, instance.calculateInterest(0.01, 1000).toTruncated(), 0.0);
     }
 }

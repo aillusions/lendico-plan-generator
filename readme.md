@@ -1,9 +1,23 @@
 
 Borrower plan generator:
 
-* To build: mvn clean package
-    
-* To test: mvn test
+* To build: 
+<pre>
+mvn clean package
+</pre>
+ 
+* To test: 
+<pre>
+    mvn test
+</pre>
+
+* To see coverage report: 
+<pre>
+    mvn clean jacoco:prepare-agent install jacoco:report
+    # Afterwards target/site/jacoco/index.html
+</pre>
+
+
     
 * To run: mvn spring-boot:run
      
