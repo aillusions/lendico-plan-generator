@@ -76,6 +76,7 @@
                 <configuration>
                     <excludes>
                         <exclude>**/data/*.*</exclude>
+                        <exclude>**/PlanGeneratorApplication.*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
