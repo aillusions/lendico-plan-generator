@@ -25,6 +25,12 @@ public class CustomDateTimeSerializerTest {
     }
 
     @Test
+    public void shouldIgnoreNull() throws IOException {
+        serializer.serialize(null, jsonGenerator, null);
+        Mockito.verify(jsonGenerator, Mockito.times(0)).writeObject(captor.capture());
+    }
+
+    @Test
     public void shouldSerializeToString() throws IOException {
 
         ZonedDateTime time = ZonedDateTime.parse("2007-12-03T10:15:30+01:00");
