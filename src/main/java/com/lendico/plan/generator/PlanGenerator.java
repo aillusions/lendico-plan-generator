@@ -28,24 +28,23 @@ public class PlanGenerator {
      * In order to inform borrowers about the final repayment schedule, we need to have pre-calculated
      * repayment plans throughout the lifetime of a loan.
      *
-     * @param loanAmount      - total loan amount ("total principal amount")
-     * @param nominalInterest - nominal interest percent (a yearly basis number)
-     * @param durationMonths  - duration (number of instalments in months)
-     * @param startDate       - Date of Disbursement/Payout
+     * @param loanAmount             - total loan amount ("total principal amount")
+     * @param nominalInterestPercent - nominal interest percent (a yearly basis number)
+     * @param durationMonths         - duration (number of instalments in months)
+     * @param startDate              - Date of Disbursement/Payout
      */
     public List<BorrowerPlanItem> generatePlan(double loanAmount,
-                                               double nominalInterest,
+                                               double nominalInterestPercent,
                                                int durationMonths,
                                                LocalDate startDate) {
         logger.debug(
                 "generatePlan called with arguments: loanAmount: {}, nominalInterestRate: {}, durationMonths: {}, startDate: {}",
                 loanAmount,
-                nominalInterest,
+                nominalInterestPercent,
                 durationMonths,
                 startDate);
 
-        // TODO refine
-        double nominalInterestRate = BigDecimal.valueOf(nominalInterest).divide(BigDecimal.valueOf(100)).doubleValue();
+        double nominalInterestRate = convertPercentToRate(nominalInterestPercent);
 
         assertValidArguments(loanAmount, nominalInterestRate, durationMonths, startDate);
 
@@ -71,6 +70,16 @@ public class PlanGenerator {
         }
 
         return rv;
+    }
+
+    protected double convertPercentToRate(double percent) {
+        if (percent < -100 || percent > 100) {
+            throw new IllegalArgumentException(
+                    String.format("Unable to convert percent to rate: {}", percent)
+            );
+        }
+
+        return BigDecimal.valueOf(percent).divide(BigDecimal.valueOf(100)).doubleValue();
     }
 
     protected void assertValidArguments(double loanAmount,

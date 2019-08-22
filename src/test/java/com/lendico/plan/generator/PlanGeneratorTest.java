@@ -10,16 +10,16 @@ import java.util.List;
 public class PlanGeneratorTest {
 
     private static final double SOME_LOAN = 1000;
-    private static final double SOME_RATE = 0.05;
+    private static final double SOME_INTEREST_PERCENT = 5.00;
     private static final int SOME_DURATION = 12;
     private static final LocalDate SOME_DATE = LocalDate.now();
 
     private static final int ZERO = 0;
     private static final int SOME_NEGATIVE = -2;
-    private static final double SOME_POSITIVE_MORE_THAN_ONE = 1.2;
 
     private static final double REFERENCE_LOAN = 5000.0;
-    private static final double REFERENCE_RATE = 0.05;
+    private static final double REFERENCE_INTEREST_PERCENT = 5.00;
+    private static final double REFERENCE_INTEREST_RATE = 0.05;
     private static final int REFERENCE_DURATION = 24;
 
     private static final double ACCEPTED_DELTA = 0.0;
@@ -28,59 +28,54 @@ public class PlanGeneratorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnNegativeLoan() {
-        Assert.assertNotNull(instance.generatePlan(SOME_NEGATIVE, SOME_RATE, SOME_DURATION, SOME_DATE));
+        instance.generatePlan(SOME_NEGATIVE, SOME_INTEREST_PERCENT, SOME_DURATION, SOME_DATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnZeroLoan() {
-        Assert.assertNotNull(instance.generatePlan(ZERO, SOME_RATE, SOME_DURATION, SOME_DATE));
+        instance.generatePlan(ZERO, SOME_INTEREST_PERCENT, SOME_DURATION, SOME_DATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnNegativeInterest() {
-        Assert.assertNotNull(instance.generatePlan(SOME_LOAN, SOME_NEGATIVE, SOME_DURATION, SOME_DATE));
+        instance.generatePlan(SOME_LOAN, SOME_NEGATIVE, SOME_DURATION, SOME_DATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnZeroInterest() {
-        Assert.assertNotNull(instance.generatePlan(SOME_LOAN, ZERO, SOME_DURATION, SOME_DATE));
+        instance.generatePlan(SOME_LOAN, ZERO, SOME_DURATION, SOME_DATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowExceptionOnInterest() {
-        Assert.assertNotNull(instance.generatePlan(SOME_LOAN, SOME_POSITIVE_MORE_THAN_ONE, SOME_DURATION, SOME_DATE));
+    public void shouldThrowExceptionOnTooLargeInterest() {
+        instance.generatePlan(SOME_LOAN, 101, SOME_DURATION, SOME_DATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnNegativeDuration() {
-        Assert.assertNotNull(instance.generatePlan(SOME_LOAN, SOME_RATE, SOME_NEGATIVE, SOME_DATE));
+        instance.generatePlan(SOME_LOAN, SOME_INTEREST_PERCENT, SOME_NEGATIVE, SOME_DATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnZeroDuration() {
-        Assert.assertNotNull(instance.generatePlan(SOME_LOAN, SOME_RATE, ZERO, SOME_DATE));
+        instance.generatePlan(SOME_LOAN, SOME_INTEREST_PERCENT, ZERO, SOME_DATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnInvalidStartData() {
-        Assert.assertNotNull(instance.generatePlan(SOME_LOAN, SOME_RATE, ZERO, null));
-    }
-
-    @Test
-    public void shouldGeneratePlan() {
-        Assert.assertNotNull(instance.generatePlan(SOME_LOAN, SOME_RATE, SOME_DURATION, SOME_DATE));
+        instance.generatePlan(SOME_LOAN, SOME_INTEREST_PERCENT, ZERO, null);
     }
 
     @Test
     public void numberOfItemsShouldBeCorresponding() {
-        Assert.assertEquals(1, instance.generatePlan(SOME_LOAN, SOME_RATE, 1, SOME_DATE).size());
-        Assert.assertEquals(12, instance.generatePlan(SOME_LOAN, SOME_RATE, 12, SOME_DATE).size());
-        Assert.assertEquals(24, instance.generatePlan(SOME_LOAN, SOME_RATE, 24, SOME_DATE).size());
+        Assert.assertEquals(1, instance.generatePlan(SOME_LOAN, SOME_INTEREST_PERCENT, 1, SOME_DATE).size());
+        Assert.assertEquals(12, instance.generatePlan(SOME_LOAN, SOME_INTEREST_PERCENT, 12, SOME_DATE).size());
+        Assert.assertEquals(24, instance.generatePlan(SOME_LOAN, SOME_INTEREST_PERCENT, 24, SOME_DATE).size());
     }
 
     @Test
     public void testGeneratedPlanItems() {
-        List<BorrowerPlanItem> plan = instance.generatePlan(REFERENCE_LOAN, REFERENCE_RATE, REFERENCE_DURATION, SOME_DATE);
+        List<BorrowerPlanItem> plan = instance.generatePlan(REFERENCE_LOAN, REFERENCE_INTEREST_PERCENT, REFERENCE_DURATION, SOME_DATE);
 
         Assert.assertEquals(REFERENCE_DURATION, plan.size());
 
@@ -109,7 +104,7 @@ public class PlanGeneratorTest {
 
     @Test
     public void shouldCalculateDerivedAnnuity() {
-        Assert.assertEquals(219.36, instance.deriveAnnuity(REFERENCE_LOAN, REFERENCE_RATE, REFERENCE_DURATION).toTruncated(), ACCEPTED_DELTA);
+        Assert.assertEquals(219.36, instance.deriveAnnuity(REFERENCE_LOAN, REFERENCE_INTEREST_RATE, REFERENCE_DURATION).toTruncated(), ACCEPTED_DELTA);
     }
 
     @Test
@@ -132,5 +127,23 @@ public class PlanGeneratorTest {
     @Test
     public void shouldCalculateInterest() {
         Assert.assertEquals(0.83, instance.calculateInterest(0.01, 1000).toTruncated(), ACCEPTED_DELTA);
+    }
+
+    @Test
+    public void shouldConvertPercentToRate() {
+        Assert.assertEquals(0.9, instance.convertPercentToRate(90), ACCEPTED_DELTA);
+        Assert.assertEquals(0.05, instance.convertPercentToRate(5), ACCEPTED_DELTA);
+        Assert.assertEquals(0.01123, instance.convertPercentToRate(1.123), ACCEPTED_DELTA);
+        Assert.assertEquals(0.006666666666, instance.convertPercentToRate(0.6666666666), ACCEPTED_DELTA);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionTooSmallPercent() {
+        instance.convertPercentToRate(-101);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionTooLargePercent() {
+        instance.convertPercentToRate(101);
     }
 }
