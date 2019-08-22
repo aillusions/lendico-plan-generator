@@ -32,9 +32,17 @@ public class PlanGenerator {
      * @param durationMonths      - duration (number of instalments in months)
      * @param startDate           - Date of Disbursement/Payout
      */
-    public List<BorrowerPlanItem> generatePlan(double loanAmount, double nominalInterestRate, int durationMonths, LocalDate startDate) {
+    public List<BorrowerPlanItem> generatePlan(double loanAmount,
+                                               double nominalInterestRate,
+                                               int durationMonths,
+                                               LocalDate startDate) {
 
-        logger.debug("generatePlan called with arguments: loanAmount: {}, nominalInterestRate: {}, durationMonths: {}, startDate: {}", loanAmount, nominalInterestRate, durationMonths, startDate);
+        logger.debug(
+                "generatePlan called with arguments: loanAmount: {}, nominalInterestRate: {}, durationMonths: {}, startDate: {}",
+                loanAmount,
+                nominalInterestRate,
+                durationMonths,
+                startDate);
 
         assertValidArguments(loanAmount, nominalInterestRate, durationMonths, startDate);
 
@@ -48,7 +56,11 @@ public class PlanGenerator {
 
             final LocalDate payoutDate = startDate.plusMonths(i);
 
-            final BorrowerPlanItem planItem = createBorrowerPlanItem(nominalInterestRate, payoutDate, derivedAnnuity, outstandingPrincipal);
+            final BorrowerPlanItem planItem = createBorrowerPlanItem(
+                    nominalInterestRate,
+                    payoutDate,
+                    derivedAnnuity,
+                    outstandingPrincipal);
 
             outstandingPrincipal = new Monetary(outstandingPrincipal - planItem.getPrincipal()).toTruncated();
 
@@ -58,21 +70,36 @@ public class PlanGenerator {
         return rv;
     }
 
-    protected void assertValidArguments(double loanAmount, double nominalInterestRate, int durationMonths, LocalDate startDate) {
+    protected void assertValidArguments(double loanAmount,
+                                        double nominalInterestRate,
+                                        int durationMonths,
+                                        LocalDate startDate) {
+
         if (loanAmount <= 0) {
-            throw new IllegalArgumentException(String.format("Unable to generate plan: too small loanAmount: {}", loanAmount));
+            throw new IllegalArgumentException(
+                    String.format("Unable to generate plan: too small loanAmount: {}", loanAmount)
+            );
         }
 
         if (nominalInterestRate <= 0) {
-            throw new IllegalArgumentException(String.format("Unable to generate plan: too small nominalInterestRate: {}", nominalInterestRate));
+            throw new IllegalArgumentException(
+                    String.format("Unable to generate plan: too small nominalInterestRate: {}", nominalInterestRate)
+            );
         }
 
         if (nominalInterestRate > 1) {
-            throw new IllegalArgumentException(String.format("Unable to generate plan: nominalInterestRate expected to be in range [0..1]. Actual: {}", nominalInterestRate));
+            throw new IllegalArgumentException(
+                    String.format(
+                            "Unable to generate plan: nominalInterestRate expected to be in range [0..1]. Actual: {}",
+                            nominalInterestRate
+                    )
+            );
         }
 
         if (durationMonths <= 0) {
-            throw new IllegalArgumentException(String.format("Unable to generate plan: too small durationMonths: {}", durationMonths));
+            throw new IllegalArgumentException(
+                    String.format("Unable to generate plan: too small durationMonths: {}", durationMonths)
+            );
         }
 
         if (startDate == null) {
@@ -113,7 +140,8 @@ public class PlanGenerator {
     }
 
     /**
-     * Principal = Annuity - Interest (if, calculated interest amount exceeds the initial outstanding principal amount, take initial outstanding principal amount instead)
+     * Principal = Annuity - Interest (if, calculated interest amount exceeds the initial outstanding principal amount,
+     * take initial outstanding principal amount instead)
      */
     protected Monetary calculatePrincipal(double derivedAnnuity, double interest, double initialOutstandingPrincipal) {
         double rv = derivedAnnuity - interest;
@@ -136,7 +164,9 @@ public class PlanGenerator {
      */
     protected Monetary deriveAnnuity(double loanAmount, double interestRateNominal, int numberOfRepayments) {
         double interestRatePerPeriod = interestRateNominal / MONTHS_PER_YEAR;
-        return new Monetary((loanAmount * interestRatePerPeriod) / (1 - Math.pow(1 + interestRatePerPeriod, -numberOfRepayments)));
+        double divident = loanAmount * interestRatePerPeriod;
+        double divisor = 1 - Math.pow(1 + interestRatePerPeriod, -numberOfRepayments);
+        return new Monetary(divident / divisor);
     }
 
     protected Monetary calculateRemainingOutstandingPrincipal(double initialOutstandingPrincipal, double principal) {

@@ -44,7 +44,6 @@ public class PlanGeneratorTest {
         Assert.assertNotNull(instance.generatePlan(SOME_LOAN, SOME_POSITIVE_MORE_THAN_ONE, SOME_DURATION, LocalDate.now()));
     }
 
-
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIllegalArgumentExceptionNegativeDuration() {
         Assert.assertNotNull(instance.generatePlan(SOME_LOAN, SOME_RATE, SOME_NEGATIVE, LocalDate.now()));
