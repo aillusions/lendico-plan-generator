@@ -40,15 +40,18 @@ public class PlanGenerator {
 
         final List<BorrowerPlanItem> rv = new LinkedList<>();
 
-        double derivedAnnuity = deriveAnnuity(loanAmount, nominalInterestRate, durationMonths).toTruncated();
-        double initialOutstandingPrincipal = loanAmount;
-        LocalDate payoutDate = startDate;
+        final double derivedAnnuity = deriveAnnuity(loanAmount, nominalInterestRate, durationMonths).toTruncated();
+
+        double outstandingPrincipal = loanAmount;
 
         for (int i = 0; i < durationMonths; i++) {
-            BorrowerPlanItem planItem = createBorrowerPlanItem(nominalInterestRate, payoutDate, derivedAnnuity, initialOutstandingPrincipal);
 
-            payoutDate = payoutDate.plusMonths(1);
-            initialOutstandingPrincipal = calculateInitialOutstandingPrincipal(initialOutstandingPrincipal, planItem.getPrincipal()).toTruncated();
+            final LocalDate payoutDate = startDate.plusMonths(i);
+
+            final BorrowerPlanItem planItem = createBorrowerPlanItem(nominalInterestRate, payoutDate, derivedAnnuity, outstandingPrincipal);
+
+            outstandingPrincipal = new Monetary(outstandingPrincipal - planItem.getPrincipal()).toTruncated();
+
             rv.add(planItem);
         }
 
@@ -77,22 +80,26 @@ public class PlanGenerator {
         }
     }
 
-    protected BorrowerPlanItem createBorrowerPlanItem(double nominalInterestRate, LocalDate payoutDate, double derivedAnnuity, double initialOutstandingPrincipal) {
+    protected BorrowerPlanItem createBorrowerPlanItem(double nominalInterestRate,
+                                                      LocalDate payoutDate,
+                                                      double derivedAnnuity,
+                                                      double outstandingPrincipal) {
+
         BorrowerPlanItem planItem = new BorrowerPlanItem();
         planItem.setRepaymentDate(payoutDate);
 
-        planItem.setInitialOutstandingPrincipal(initialOutstandingPrincipal);
+        planItem.setInitialOutstandingPrincipal(outstandingPrincipal);
 
-        double interest = calculateInterest(nominalInterestRate, initialOutstandingPrincipal).toTruncated();
+        double interest = calculateInterest(nominalInterestRate, outstandingPrincipal).toTruncated();
         planItem.setInterest(interest);
 
-        double principal = calculatePrincipal(derivedAnnuity, interest, initialOutstandingPrincipal).toTruncated();
+        double principal = calculatePrincipal(derivedAnnuity, interest, outstandingPrincipal).toTruncated();
         planItem.setPrincipal(principal);
 
         double annuity = calculateAnnuity(principal, interest).toTruncated();
         planItem.setAnnuity(annuity);
 
-        double remainingOutstandingPrincipal = calculateRemainingOutstandingPrincipal(initialOutstandingPrincipal, principal).toTruncated();
+        double remainingOutstandingPrincipal = calculateRemainingOutstandingPrincipal(outstandingPrincipal, principal).toTruncated();
         planItem.setRemainingOutstandingPrincipal(remainingOutstandingPrincipal);
 
         return planItem;
@@ -130,10 +137,6 @@ public class PlanGenerator {
     protected Monetary deriveAnnuity(double loanAmount, double interestRateNominal, int numberOfRepayments) {
         double interestRatePerPeriod = interestRateNominal / MONTHS_PER_YEAR;
         return new Monetary((loanAmount * interestRatePerPeriod) / (1 - Math.pow(1 + interestRatePerPeriod, -numberOfRepayments)));
-    }
-
-    protected Monetary calculateInitialOutstandingPrincipal(double initialOutstandingPrincipal, double principal) {
-        return new Monetary(initialOutstandingPrincipal - principal);
     }
 
     protected Monetary calculateRemainingOutstandingPrincipal(double initialOutstandingPrincipal, double principal) {
