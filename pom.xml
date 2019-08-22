@@ -19,12 +19,20 @@
         <lombok.version>1.18.8</lombok.version>
         <jacoco.version>0.7.7.201606060606</jacoco.version>
         <mockito.version>1.10.19</mockito.version>
+        <mockmvc.version>3.3.0</mockmvc.version>
+        <commons.string.version>3.9</commons.string.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons.string.version}</version>
         </dependency>
 
         <dependency>
@@ -41,6 +49,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>spring-mock-mvc</artifactId>
+            <version>${mockmvc.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

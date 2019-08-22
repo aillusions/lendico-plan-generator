@@ -26,7 +26,7 @@ public class PlanGeneratorController {
     @Autowired
     protected DataMapper dataMapper;
 
-    @PostMapping(path = "/generate-plan")
+    @PostMapping(path = "/generate-plan", headers = "Accept=application/json")
     @ResponseBody
     public BorrowerPlanDto generatePlan(@RequestBody @Valid BorrowerPlanRequestDto requestDto) {
 
@@ -36,7 +36,8 @@ public class PlanGeneratorController {
                 requestDto.getLoanAmount(),
                 requestDto.getNominalRate(),
                 requestDto.getDuration(),
-                requestDto.getStartDate());
+                requestDto.getStartDate().toLocalDate()
+        );
 
         return dataMapper.mapBorrowerPlanDto(generatedItems);
     }

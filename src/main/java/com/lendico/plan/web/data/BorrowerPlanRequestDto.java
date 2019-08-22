@@ -1,5 +1,9 @@
 package com.lendico.plan.web.data;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.lendico.plan.web.serializer.CustomDateTimeDeserializer;
+import com.lendico.plan.web.serializer.CustomDateTimeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 
 @Data
 @NoArgsConstructor
@@ -28,5 +32,7 @@ public class BorrowerPlanRequestDto {
     private Integer duration;
 
     @NotNull
-    private LocalDate startDate;
+    @JsonDeserialize(using = CustomDateTimeDeserializer.class)
+    @JsonSerialize(using = CustomDateTimeSerializer.class)
+    private ZonedDateTime startDate;
 }
