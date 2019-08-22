@@ -9,17 +9,62 @@ import java.util.List;
 
 public class PlanGeneratorTest {
 
+    private static final double SOME_LOAN = 5000;
+    private static final double SOME_RATE = 0.05;
+    private static final int SOME_DURATION = 12;
+
+    private static final int ZERO = 0;
+    private static final int SOME_NEGATIVE = -2;
+    private static final double SOME_POSITIVE_MORE_THAN_ONE = 1.2;
+
     private PlanGenerator instance = new PlanGenerator();
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowIllegalArgumentExceptionOnNegativeLoan() {
+        Assert.assertNotNull(instance.generatePlan(SOME_NEGATIVE, SOME_RATE, SOME_DURATION, LocalDate.now()));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowIllegalArgumentExceptionOnZeroLoan() {
+        Assert.assertNotNull(instance.generatePlan(ZERO, SOME_RATE, SOME_DURATION, LocalDate.now()));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowIllegalArgumentExceptionOnNegativeInterest() {
+        Assert.assertNotNull(instance.generatePlan(SOME_LOAN, SOME_NEGATIVE, SOME_DURATION, LocalDate.now()));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowIllegalArgumentExceptionOnZeroInterest() {
+        Assert.assertNotNull(instance.generatePlan(SOME_LOAN, ZERO, SOME_DURATION, LocalDate.now()));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowIllegalArgumentExceptionOnInterest() {
+        Assert.assertNotNull(instance.generatePlan(SOME_LOAN, SOME_POSITIVE_MORE_THAN_ONE, SOME_DURATION, LocalDate.now()));
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowIllegalArgumentExceptionNegativeDuration() {
+        Assert.assertNotNull(instance.generatePlan(SOME_LOAN, SOME_RATE, SOME_NEGATIVE, LocalDate.now()));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowIllegalArgumentExceptionZeroDuration() {
+        Assert.assertNotNull(instance.generatePlan(SOME_LOAN, SOME_RATE, ZERO, LocalDate.now()));
+    }
 
     @Test
     public void shouldGeneratePlan() {
-        Assert.assertNotNull(instance.generatePlan(100, 1, 12, LocalDate.now()));
+        Assert.assertNotNull(instance.generatePlan(SOME_LOAN, SOME_RATE, SOME_DURATION, LocalDate.now()));
     }
 
     @Test
     public void numberOfItemsShouldBeCorresponding() {
-        Assert.assertEquals(12, instance.generatePlan(100, 1, 12, LocalDate.now()).size());
-        Assert.assertEquals(24, instance.generatePlan(100, 1, 24, LocalDate.now()).size());
+        Assert.assertEquals(1, instance.generatePlan(SOME_LOAN, SOME_RATE, 1, LocalDate.now()).size());
+        Assert.assertEquals(12, instance.generatePlan(SOME_LOAN, SOME_RATE, SOME_DURATION, LocalDate.now()).size());
+        Assert.assertEquals(24, instance.generatePlan(SOME_LOAN, SOME_RATE, 24, LocalDate.now()).size());
     }
 
     @Test
@@ -47,16 +92,6 @@ public class PlanGeneratorTest {
         Assert.assertEquals(0.91, lastItem.getInterest(), 0);
         Assert.assertEquals(218.37, lastItem.getInitialOutstandingPrincipal(), 0);
         Assert.assertEquals(0, lastItem.getRemainingOutstandingPrincipal(), 0);
-    }
-
-    @Test
-    public void shouldCalculateAnnuityPayment1Year() {
-
-        double loanAmount = 1000.0;
-        double interestRateNominal = 0.02;
-        int durationMonths = 12;
-
-        Assert.assertEquals(84.24, instance.deriveAnnuity(loanAmount, interestRateNominal, durationMonths).toTruncated(), 0.0);
     }
 
     @Test

@@ -2,6 +2,8 @@ package com.lendico.plan.generator;
 
 import com.lendico.plan.generator.data.BorrowerPlanItem;
 import com.lendico.plan.generator.data.Monetary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,6 +15,8 @@ import java.util.List;
  */
 @Service
 public class PlanGenerator {
+
+    private static final Logger logger = LoggerFactory.getLogger(PlanGenerator.class);
 
     // For simplicity, we will have the following day convention: each month has 30 days, a year has 360 days.
     private static final int DAYS_PER_MONTH = 30;
@@ -29,6 +33,11 @@ public class PlanGenerator {
      * @param startDate           - Date of Disbursement/Payout
      */
     public List<BorrowerPlanItem> generatePlan(double loanAmount, double nominalInterestRate, int durationMonths, LocalDate startDate) {
+
+        logger.debug("generatePlan called with arguments: loanAmount: {}, nominalInterestRate: {}, durationMonths: {}, startDate: {}", loanAmount, nominalInterestRate, durationMonths, startDate);
+
+        assertValidArguments(loanAmount, nominalInterestRate, durationMonths, startDate);
+
         final List<BorrowerPlanItem> rv = new ArrayList<>();
 
         double derivedAnnuity = deriveAnnuity(loanAmount, nominalInterestRate, durationMonths).toTruncated();
@@ -44,6 +53,28 @@ public class PlanGenerator {
         }
 
         return rv;
+    }
+
+    protected void assertValidArguments(double loanAmount, double nominalInterestRate, int durationMonths, LocalDate startDate) {
+        if (loanAmount <= 0) {
+            throw new IllegalArgumentException(String.format("Unable to generate plan: too small loanAmount: {}", loanAmount));
+        }
+
+        if (nominalInterestRate <= 0) {
+            throw new IllegalArgumentException(String.format("Unable to generate plan: too small nominalInterestRate: {}", nominalInterestRate));
+        }
+
+        if (nominalInterestRate > 1) {
+            throw new IllegalArgumentException(String.format("Unable to generate plan: nominalInterestRate expected to be in range [0..1]. Actual: {}", nominalInterestRate));
+        }
+
+        if (durationMonths <= 0) {
+            throw new IllegalArgumentException(String.format("Unable to generate plan: too small durationMonths: {}", durationMonths));
+        }
+
+        if (startDate == null) {
+            throw new IllegalArgumentException("Unable to generate plan: startDate is not provided.");
+        }
     }
 
     protected BorrowerPlanItem createBorrowerPlanItem(double nominalInterestRate, LocalDate payoutDate, double derivedAnnuity, double initialOutstandingPrincipal) {
