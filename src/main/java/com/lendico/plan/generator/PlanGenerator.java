@@ -73,12 +73,6 @@ public class PlanGenerator {
     }
 
     protected double convertPercentToRate(double percent) {
-        if (percent < -100 || percent > 100) {
-            throw new IllegalArgumentException(
-                    String.format("Unable to convert percent to rate: {}", percent)
-            );
-        }
-
         return BigDecimal.valueOf(percent).divide(BigDecimal.valueOf(100)).doubleValue();
     }
 

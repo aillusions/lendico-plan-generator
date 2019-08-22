@@ -133,14 +133,4 @@ public class PlanGeneratorTest {
         Assert.assertEquals(0.01123, instance.convertPercentToRate(1.123), ACCEPTED_DELTA);
         Assert.assertEquals(0.006666666666, instance.convertPercentToRate(0.6666666666), ACCEPTED_DELTA);
     }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowExceptionTooSmallPercent() {
-        instance.convertPercentToRate(-101);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowExceptionTooLargePercent() {
-        instance.convertPercentToRate(101);
-    }
 }

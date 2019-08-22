@@ -70,14 +70,21 @@ components:
         loanAmount:
           type: string
           example: '5000'
+          minimum: 1
+          description: total loan amount ("total principal amount")
         nominalRate:
           type: string
           example: '5.0'
+          minimum: 0
+          description: nominal interest rate per year in percents
         duration:
           type: integer
           example: 24
+          minimum: 1
+          description: duration (number of instalments in months)
         startDate:
           type: string
           example: '2019-11-01T00:00:01Z'
+          description: Date of Disbursement/Payout
 
 
