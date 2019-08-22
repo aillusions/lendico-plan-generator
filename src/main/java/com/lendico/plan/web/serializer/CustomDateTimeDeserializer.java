@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class CustomDateTimeDeserializer extends JsonDeserializer<ZonedDateTime> {
 
@@ -24,9 +25,9 @@ public class CustomDateTimeDeserializer extends JsonDeserializer<ZonedDateTime> 
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CustomDateTimeSerializer.DATE_FORMAT_PATTERN);
             return ZonedDateTime.parse(stringValue, formatter);
-        } catch (IllegalArgumentException e) {
-            logger.error("Unable to deserialize data: from " + stringValue);
-            return null;
+        } catch (DateTimeParseException e) {
+            logger.error("Unable to deserialize data: from " + stringValue, e);
+            throw e;
         }
     }
 }
