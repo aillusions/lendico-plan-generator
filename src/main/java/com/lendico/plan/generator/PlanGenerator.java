@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,22 +28,24 @@ public class PlanGenerator {
      * In order to inform borrowers about the final repayment schedule, we need to have pre-calculated
      * repayment plans throughout the lifetime of a loan.
      *
-     * @param loanAmount          - total loan amount ("total principal amount")
-     * @param nominalInterestRate - nominal interest rate (a yearly basis number)
-     * @param durationMonths      - duration (number of instalments in months)
-     * @param startDate           - Date of Disbursement/Payout
+     * @param loanAmount      - total loan amount ("total principal amount")
+     * @param nominalInterest - nominal interest percent (a yearly basis number)
+     * @param durationMonths  - duration (number of instalments in months)
+     * @param startDate       - Date of Disbursement/Payout
      */
     public List<BorrowerPlanItem> generatePlan(double loanAmount,
-                                               double nominalInterestRate,
+                                               double nominalInterest,
                                                int durationMonths,
                                                LocalDate startDate) {
-
         logger.debug(
                 "generatePlan called with arguments: loanAmount: {}, nominalInterestRate: {}, durationMonths: {}, startDate: {}",
                 loanAmount,
-                nominalInterestRate,
+                nominalInterest,
                 durationMonths,
                 startDate);
+
+        // TODO refine
+        double nominalInterestRate = BigDecimal.valueOf(nominalInterest).divide(BigDecimal.valueOf(100)).doubleValue();
 
         assertValidArguments(loanAmount, nominalInterestRate, durationMonths, startDate);
 
