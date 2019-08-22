@@ -1,6 +1,7 @@
 package com.lendico.plan.generator;
 
 import com.lendico.plan.generator.data.BorrowerPlanItem;
+import com.lendico.plan.generator.data.PlanGeneratorException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -23,42 +24,37 @@ public class PlanGeneratorTest {
 
     private PlanGenerator instance = new PlanGenerator();
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = PlanGeneratorException.class)
     public void shouldThrowExceptionOnNegativeLoan() {
         instance.generatePlan(-1, SOME_INTEREST_PERCENT, SOME_DURATION, SOME_DATE);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = PlanGeneratorException.class)
     public void shouldThrowExceptionOnZeroLoan() {
         instance.generatePlan(0, SOME_INTEREST_PERCENT, SOME_DURATION, SOME_DATE);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = PlanGeneratorException.class)
     public void shouldThrowExceptionOnNegativeInterest() {
         instance.generatePlan(SOME_LOAN, -1, SOME_DURATION, SOME_DATE);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = PlanGeneratorException.class)
     public void shouldThrowExceptionOnZeroInterest() {
         instance.generatePlan(SOME_LOAN, 0, SOME_DURATION, SOME_DATE);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowExceptionOnTooLargeInterest() {
-        instance.generatePlan(SOME_LOAN, 101, SOME_DURATION, SOME_DATE);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = PlanGeneratorException.class)
     public void shouldThrowExceptionOnNegativeDuration() {
         instance.generatePlan(SOME_LOAN, SOME_INTEREST_PERCENT, -1, SOME_DATE);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = PlanGeneratorException.class)
     public void shouldThrowExceptionOnZeroDuration() {
         instance.generatePlan(SOME_LOAN, SOME_INTEREST_PERCENT, 0, SOME_DATE);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = PlanGeneratorException.class)
     public void shouldThrowExceptionOnInvalidStartData() {
         instance.generatePlan(SOME_LOAN, SOME_INTEREST_PERCENT, SOME_DURATION, null);
     }

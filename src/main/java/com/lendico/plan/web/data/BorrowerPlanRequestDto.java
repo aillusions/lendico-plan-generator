@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.ZonedDateTime;
 
 @Data
@@ -16,11 +17,11 @@ import java.time.ZonedDateTime;
 public class BorrowerPlanRequestDto {
 
     @NotNull
-    @Min(1)
+    @Positive
     private Double loanAmount;
 
     @NotNull
-    @Min(0)
+    @Positive
     private Double nominalRate;
 
     @NotNull

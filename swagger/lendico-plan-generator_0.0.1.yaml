@@ -70,13 +70,11 @@ components:
         loanAmount:
           type: string
           example: '5000'
-          minimum: 1
-          description: total loan amount ("total principal amount")
+          description: total loan amount ("total principal amount"). Should be positive
         nominalRate:
           type: string
           example: '5.0'
-          minimum: 0
-          description: nominal interest rate per year in percents
+          description: nominal interest rate per year in percents. Should be positive
         duration:
           type: integer
           example: 24
@@ -85,6 +83,6 @@ components:
         startDate:
           type: string
           example: '2019-11-01T00:00:01Z'
-          description: Date of Disbursement/Payout
+          description: Date of Disbursement/Payout. Format - yyyy-MM-dd'T'HH:mm:ssX
 
 

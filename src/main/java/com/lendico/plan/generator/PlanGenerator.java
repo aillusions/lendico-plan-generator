@@ -2,6 +2,7 @@ package com.lendico.plan.generator;
 
 import com.lendico.plan.generator.data.BorrowerPlanItem;
 import com.lendico.plan.generator.data.Monetary;
+import com.lendico.plan.generator.data.PlanGeneratorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -82,25 +83,25 @@ public class PlanGenerator {
                                         ZonedDateTime startDate) {
 
         if (loanAmount <= 0) {
-            throw new IllegalArgumentException(
+            throw new PlanGeneratorException(
                     String.format("Unable to generate plan: too small loanAmount: {}", loanAmount)
             );
         }
 
         if (nominalInterestRate <= 0) {
-            throw new IllegalArgumentException(
+            throw new PlanGeneratorException(
                     String.format("Unable to generate plan: nominalInterestRate expected to be in range [0..1]. Actual: {}", nominalInterestRate)
             );
         }
 
         if (durationMonths <= 0) {
-            throw new IllegalArgumentException(
+            throw new PlanGeneratorException(
                     String.format("Unable to generate plan: too small durationMonths: {}", durationMonths)
             );
         }
 
         if (startDate == null) {
-            throw new IllegalArgumentException("Unable to generate plan: startDate is not provided.");
+            throw new PlanGeneratorException("Unable to generate plan: startDate is not provided.");
         }
     }
 
