@@ -14,7 +14,7 @@ mvn clean package
 * To see coverage report: 
 <pre>
     mvn clean jacoco:prepare-agent install jacoco:report
-    # Afterwards target/site/jacoco/index.html
+    # afterwards target/site/jacoco/index.html
 </pre>
 
 
